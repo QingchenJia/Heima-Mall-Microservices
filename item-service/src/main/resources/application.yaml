@@ -3,6 +3,9 @@ server:
 spring:
   application:
     name: item-service
+  cloud:
+    nacos:
+      server-addr: 192.168.19.130:8848
   profiles:
     active: dev
   datasource:
@@ -19,7 +22,7 @@ mybatis-plus:
       id-type: auto
 logging:
   level:
-    com.hmall.cart: debug
+    com.hmall.item: debug
   pattern:
     dateformat: HH:mm:ss:SSS
   file:
