@@ -25,6 +25,12 @@
             <artifactId>hm-common</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <!--api-->
+        <dependency>
+            <groupId>edu.qingchenjia</groupId>
+            <artifactId>hm-api</artifactId>
+            <version>1.0.0</version>
+        </dependency>
         <!--web-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -44,16 +50,6 @@
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-        </dependency>
-        <!-- OpenFeign -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
-        </dependency>
-        <!-- loadbalancer -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
         </dependency>
     </dependencies>
 
