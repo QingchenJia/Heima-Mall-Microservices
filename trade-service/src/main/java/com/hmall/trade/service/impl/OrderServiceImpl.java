@@ -1,11 +1,12 @@
 package com.hmall.trade.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.hmall.api.client.CartClient;
 import com.hmall.api.client.ItemClient;
 import com.hmall.api.dto.ItemDTO;
+import com.hmall.api.dto.OrderDetailDTO;
 import com.hmall.common.exception.BadRequestException;
 import com.hmall.common.utils.UserContext;
-import com.hmall.trade.domain.dto.OrderDetailDTO;
 import com.hmall.trade.domain.dto.OrderFormDTO;
 import com.hmall.trade.domain.po.Order;
 import com.hmall.trade.domain.po.OrderDetail;
@@ -30,7 +31,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     private final IOrderDetailService detailService;
 
-//    private final ICartService cartService;
+    private final CartClient cartClient;
 
     @Override
     @Transactional
@@ -66,11 +67,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         detailService.saveBatch(details);
 
         // 3.清理购物车商品
-//        cartService.removeByItemIds(itemIds);
+        cartClient.removeByItemIds(itemIds);
 
         // 4.扣减库存
         try {
-//            itemClient.deductStock(detailDTOS);
+            itemClient.deductStock(detailDTOS);
         } catch (Exception e) {
             throw new RuntimeException("库存不足！");
         }

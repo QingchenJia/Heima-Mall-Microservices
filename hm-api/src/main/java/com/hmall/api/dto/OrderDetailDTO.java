@@ -1,4 +1,4 @@
-package com.hmall.trade.domain.dto;
+package com.hmall.api.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -11,6 +11,7 @@ import lombok.experimental.Accessors;
 public class OrderDetailDTO {
     @ApiModelProperty("商品id")
     private Long itemId;
+
     @ApiModelProperty("商品购买数量")
     private Integer num;
 }
