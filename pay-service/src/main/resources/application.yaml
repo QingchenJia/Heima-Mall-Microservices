@@ -1,15 +1,15 @@
 server:
-  port: 8081
+  port: 8085
 spring:
   application:
-    name: item-service
+    name: pay-service
   cloud:
     nacos:
       server-addr: 192.168.19.130:8848
   profiles:
     active: dev
   datasource:
-    url: jdbc:mysql://${hm.db.host}:3306/hm-item?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://${hm.db.host}:3306/hm-pay?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: ${hm.db.pw}
@@ -22,7 +22,7 @@ mybatis-plus:
       id-type: auto
 logging:
   level:
-    com.hmall.item: debug
+    com.hmall.pay: debug
   pattern:
     dateformat: HH:mm:ss:SSS
   file:
@@ -30,12 +30,12 @@ logging:
 knife4j:
   enable: true
   openapi:
-    title: 商品微服务接口文档
-    description: "商品微服务接口文档"
+    title: 支付微服务接口文档
+    description: "支付微服务接口文档"
     version: v1.0.0
     group:
       default:
         group-name: default
         api-rule: package
         api-rule-resources:
-          - com.hmall.item.controller
+          - com.hmall.pay.controller
