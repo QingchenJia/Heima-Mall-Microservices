@@ -10,7 +10,7 @@
     </parent>
 
     <groupId>edu.qingchenjia</groupId>
-    <artifactId>hm-api</artifactId>
+    <artifactId>hm-gateway</artifactId>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
@@ -19,20 +19,37 @@
     </properties>
 
     <dependencies>
-        <!-- OpenFeign -->
+        <!--common-->
+        <dependency>
+            <groupId>com.heima</groupId>
+            <artifactId>hm-common</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <!-- gateway -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <artifactId>spring-cloud-starter-gateway</artifactId>
+        </dependency>
+        <!-- Alibaba-Nacos -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
         <!-- loadbalancer -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-loadbalancer</artifactId>
         </dependency>
-        <!-- feign-okhttp -->
-        <dependency>
-            <groupId>io.github.openfeign</groupId>
-            <artifactId>feign-okhttp</artifactId>
-        </dependency>
     </dependencies>
+
+    <build>
+        <finalName>${project.artifactId}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.7.12</version>
+            </plugin>
+        </plugins>
+    </build>
 </project>
