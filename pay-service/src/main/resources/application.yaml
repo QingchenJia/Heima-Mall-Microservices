@@ -6,6 +6,11 @@ spring:
   cloud:
     nacos:
       server-addr: 192.168.19.130:8848
+    sentinel:
+      enabled: true
+      http-method-specify: true
+      transport:
+        dashboard: localhost:10000
   profiles:
     active: dev
   datasource:
