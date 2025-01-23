@@ -47,3 +47,18 @@ knife4j:
 feign:
   okhttp:
     enabled: true
+seata:
+  registry:
+    type: nacos
+    nacos:
+      server-addr: 192.168.19.130:8848
+      namespace: ""
+      group: DEFAULT_GROUP
+      application: seata-server
+      username: nacos
+      password: nacos
+  tx-service-group: hmall
+  service:
+    vgroup-mapping:
+      hmall: "default"
+  data-source-proxy-mode: XA
