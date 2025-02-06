@@ -17,6 +17,13 @@ spring:
     virtual-host: /hmall
     username: hmall
     password: hmall
+    connection-timeout: 1s
+    template:
+      retry:
+        enabled: true
+        initial-interval: 1000ms
+        multiplier: 1
+        max-attempts: 3
   profiles:
     active: dev
   datasource:

@@ -1,5 +1,6 @@
 package com.hmall.common.config;
 
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -7,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConditionalOnClass(MessageConverter.class)
+@ConditionalOnClass(RabbitTemplate.class)
 public class RabbitMqConfig {
     /**
      * 配置并返回一个消息转换器，用于将消息转换为JSON格式或从JSON格式转换消息
