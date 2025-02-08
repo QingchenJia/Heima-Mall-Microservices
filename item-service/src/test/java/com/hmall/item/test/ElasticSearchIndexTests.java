@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.util.Map;
 
-public class ElasticSearchTests {
+public class ElasticSearchIndexTests {
     private RestHighLevelClient restHighLevelClient;
 
     public static final String INDEX_JSON = "{\n" +
