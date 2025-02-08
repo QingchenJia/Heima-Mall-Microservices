@@ -1,11 +1,15 @@
 package com.hmall.item.test;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.json.JSONUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hmall.item.domain.po.Item;
 import com.hmall.item.domain.po.ItemDoc;
 import com.hmall.item.service.IItemService;
 import org.apache.http.HttpHost;
+import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.get.GetRequest;
@@ -24,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
+import java.util.List;
 
 @SpringBootTest(properties = "spring.profiles.active=local")
 public class ElasticSearchDocTests {
@@ -78,5 +83,37 @@ public class ElasticSearchDocTests {
         );
         UpdateResponse updateResponse = restHighLevelClient.update(updateRequest, RequestOptions.DEFAULT);
         System.out.println(updateResponse);
+    }
+
+    @Test
+    void testDocumentBulkRequest() throws IOException {
+        int page = 1;
+        int pageSize = 500;
+
+        while (true) {
+            Page<Item> itemPage = Page.of(page, pageSize);
+            LambdaQueryWrapper<Item> queryWrapperItem = new LambdaQueryWrapper<>();
+            queryWrapperItem.eq(Item::getStatus, 1);
+
+            itemService.page(itemPage, queryWrapperItem);
+
+            List<Item> items = itemPage.getRecords();
+            if (CollUtil.isEmpty(items)) {
+                break;
+            }
+
+            List<ItemDoc> itemDocs = BeanUtil.copyToList(items, ItemDoc.class);
+
+            BulkRequest bulkRequest = new BulkRequest();
+            itemDocs.forEach(itemDoc -> {
+                bulkRequest.add(new IndexRequest("items")
+                        .id(itemDoc.getId())
+                        .source(JSONUtil.toJsonStr(itemDoc), XContentType.JSON));
+            });
+
+            restHighLevelClient.bulk(bulkRequest, RequestOptions.DEFAULT);
+
+            page++;
+        }
     }
 }
