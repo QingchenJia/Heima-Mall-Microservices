@@ -8,6 +8,10 @@ import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.Aggregations;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.aggregations.metrics.Stats;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.junit.jupiter.api.AfterEach;
@@ -135,5 +139,33 @@ public class ElasticSearchQueryTests {
             System.out.println(searchHit.getSourceAsString());
             System.out.println(searchHit.getHighlightFields());
         });
+    }
+
+    @Test
+    void testSearchAggregationQuery() throws IOException {
+        SearchRequest searchRequest = new SearchRequest("items");
+        searchRequest.source()
+                .size(0)
+                .query(QueryBuilders.termQuery("category.keyword", "手机"))
+                .aggregation(AggregationBuilders.terms("brand_agg")
+                        .size(10)
+                        .field("brand.keyword")
+                        .subAggregation(AggregationBuilders.stats("price_stats")
+                                .field("price")));
+
+        SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+
+        Aggregations aggregations = searchResponse.getAggregations();
+        Terms brandAgg = aggregations.get("brand_agg");
+        brandAgg.getBuckets()
+                .forEach(bucket -> {
+                    System.out.println(bucket.getKeyAsString());
+                    System.out.println(bucket.getDocCount());
+
+                    Stats priceStats = bucket.getAggregations().get("price_stats");
+                    System.out.println(priceStats.getAvg());
+                    System.out.println(priceStats.getMax());
+                    System.out.println(priceStats.getMin());
+                });
     }
 }
